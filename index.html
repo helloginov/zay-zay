@@ -22,7 +22,7 @@
             --bg-opacity-desktop: 0.6;
             
             /* Основной цвет текста */
-            --text-color: #264a26;
+            --text-color: #1b3b1b;
             
             /* Цвет заголовков */
             --heading-color: #264a26;
@@ -102,6 +102,10 @@
             align-items: center;
             padding: 20px;
             perspective: 1000px;
+        }
+        /* скрываем контейнер до загрузки имён */
+        .envelope-container.hidden-load {
+            visibility: hidden;
         }
 
         .envelope-wrapper {
@@ -208,7 +212,8 @@
                 top: 100px; /* соответствует мобильной высоте клапана */
             }
             .envelope {
-                padding-top: 140px; /* меньше для мобильных, но всё ещё достаточно, чтобы текст был ниже печати */
+                /* увеличиваем отступ, чтобы текст не заходил под печать */
+                padding-top: 200px;
             }
         }
 
@@ -776,7 +781,7 @@
     <div class="background"></div>
 
     <!-- КОНВЕРТ -->
-    <div class="envelope-container" id="envelopeContainer">
+    <div class="envelope-container hidden-load" id="envelopeContainer">
         <div class="envelope-wrapper" id="envelopeWrapper">
             <!-- Клапан конверта -->
             <div class="envelope-flap"></div>
@@ -840,7 +845,7 @@
 
             <p class="info-text">
                 Сбор гостей на месте в 14:00<br><br>
-                Для наших иногородних гостей будет организован трансфер из Вятских Полян и обратно
+                Для наших иногородних гостей будет организован трансфер из Вятских Полян и обратно 🚌
             </p>
         </div>
 
@@ -868,7 +873,7 @@
                 </div>
             </div>
             <p class="dresscode-additional">
-                Мероприятие будет в значительной степени проходить на свежем воздухе, поэтому одежду и обувь просим подбирать по погоде
+                Мероприятие будет в значительной степени проходить на свежем воздухе, поэтому одежду и обувь должны быть не только красивыми, но и удобными
             </p>
         </div>
 
@@ -876,7 +881,7 @@
         <div class="wishes">
             <h2 class="wishes-title">Пожелания</h2>
             <p class="wishes-text">
-                Просим воздержаться от дарения цветов и других крупногабаритных подарков
+                Просим воздержаться от дарения цветов и других крупногабаритных подарков (машину — можно 😉)
             </p>
         </div>
 
@@ -884,8 +889,8 @@
         <div class="rsvp-section">
             <p class="rsvp-text">Просим подтвердить своё присутствие не позднее 30 апреля</p>
             <div class="rsvp-buttons">
-                <button class="rsvp-button rsvp-yes" id="rsvpYes" onclick="setRSVP('yes')">Подтвердить</button>
-                <button class="rsvp-button rsvp-no" id="rsvpNo" onclick="setRSVP('no')">Отказаться</button>
+                <button class="rsvp-button rsvp-yes" id="rsvpYes" onclick="setRSVP('yes')">Подтвердить 😊</button>
+                <button class="rsvp-button rsvp-no" id="rsvpNo" onclick="setRSVP('no')">Отказаться 😢</button>
             </div>
         </div>
 
@@ -950,10 +955,15 @@
                 if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
                 Object.assign(guestGroups, data);
-                // обновим на странице уже установленные имена, если нужно
-                document.getElementById('guestNames').textContent = getGuestNames();
+                // установить имена только после получения данных
+                const namesElem = document.getElementById('guestNames');
+                namesElem.textContent = getGuestNames();
+                // показать конверт теперь, когда имена есть
+                document.getElementById('envelopeContainer').classList.remove('hidden-load');
             } catch (err) {
                 console.error('Не удалось загрузить guestGroups:', err);
+                // даже при ошибке, отображаем конверт чтобы не зависнуть
+                document.getElementById('envelopeContainer').classList.remove('hidden-load');
             }
         }
 
