@@ -51,7 +51,13 @@
             color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
-            font-size: 28px;
+            /* мобильный базовый размер шрифта чуть меньше */
+            font-size: 24px;
+        }
+        @media (min-width: 501px) {
+            body {
+                font-size: 28px;
+            }
         }
 
         /* Фоновое изображение - МОБИЛЬНАЯ ВЕРСИЯ */
@@ -110,7 +116,8 @@
 
         .envelope-wrapper {
             position: relative;
-            width: 100%;
+            /* мобильная ширина: чуть меньше экрана, чтобы не прилегать к краю */
+            width: 90vw;
             max-width: 640px;
         }
 
@@ -139,14 +146,14 @@
             pointer-events: none;
         }
 
-        /* Клапан конверта (треугольник сверху) */
+        /* Клапан конверта (треугольник сверху) - mobile first */
         .envelope-flap {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            /* Немного увеличим высоту клапана для гармонии с увеличенным конвертом */
-            height: 160px;
+            /* мобильная высота клапана */
+            height: 100px;
             /* Закрыт по умолчанию (перевернут). При добавлении класса .opened он откроется */
             transform: translateY(-99%) rotateX(180deg);
             transform-origin: bottom center;
@@ -154,38 +161,7 @@
             z-index: 10;
         }
 
-        .envelope-flap::before {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 0;
-            /* Подогнано под новую максимальную ширину конверта (320+320=640) */
-            border-left: 320px solid transparent;
-            border-right: 320px solid transparent;
-            border-bottom: 160px solid #f5e6d3;
-            filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.1));
-        }
-
-        /* Адаптация клапана под ширину */
-        @media (max-width: 500px) {
-            .envelope-flap::before {
-                border-left: 50vw solid transparent;
-                border-right: 50vw solid transparent;
-                border-bottom: 100px solid #f5e6d3;
-            }
-            .envelope-flap {
-                height: 100px;
-            }
-        }
-
-        .envelope-wrapper.opened .envelope-flap {
-            /* Открытое состояние: клапан разворачивается вверх */
-            transform: translateY(-99%) rotateX(0deg);
-        }
-
-        /* Внутренняя часть клапана (видна при открытии) */
+        .envelope-flap::before,
         .envelope-flap::after {
             content: '';
             position: absolute;
@@ -193,27 +169,44 @@
             left: 0;
             width: 0;
             height: 0;
-            border-left: 320px solid transparent;
-            border-right: 320px solid transparent;
-            border-bottom: 160px solid #d4c4a8;
+            /* треугольник всегда растёт до половины ширины контейнера */
+            border-left: 50% solid transparent;
+            border-right: 50% solid transparent;
         }
 
-        @media (max-width: 500px) {
-            .envelope-flap::after {
-                border-left: 50vw solid transparent;
-                border-right: 50vw solid transparent;
-                border-bottom: 100px solid #d4c4a8;
+        .envelope-flap::before {
+            border-bottom: 100px solid #f5e6d3;
+            filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.1));
+        }
+
+        .envelope-flap::after {
+            border-bottom: 100px solid #d4c4a8;
+        }
+
+        /* печать и отступы по умолчанию для мобильных */
+        .seal {
+            top: 100px;
+        }
+        .envelope {
+            padding-top: 200px;
+        }
+
+        /* увеличиваем всё для экранов шире 500px (десктоп/планшет) */
+        @media (min-width: 501px) {
+            .envelope-flap {
+                height: 160px;
             }
-        }
-
-        /* Подвинем печать для мобильных, где клапан меньше */
-        @media (max-width: 500px) {
+            .envelope-flap::before {
+                border-bottom: 160px solid #f5e6d3;
+            }
+            .envelope-flap::after {
+                border-bottom: 160px solid #d4c4a8;
+            }
             .seal {
-                top: 100px; /* соответствует мобильной высоте клапана */
+                top: 145px;
             }
             .envelope {
-                /* увеличиваем отступ, чтобы текст не заходил под печать */
-                padding-top: 200px;
+                padding-top: 220px;
             }
         }
 
