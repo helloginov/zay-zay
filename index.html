@@ -3,311 +3,1064 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Свадьба Анастасии и Артёма</title>
-    <!-- Подключаем красивые шрифты Google Fonts -->
+    <title>Свадебное приглашение</title>
+    
+    <!-- Подключение шрифтов -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
     
     <style>
-        /* === НАСТРОЙКИ СТИЛЯ (CSS) === */
+        /* ============================================
+           НАСТРАИВАЕМЫЕ ПАРАМЕТРЫ - ИЗМЕНИТЕ ЗДЕСЬ
+           ============================================ */
         :root {
-            --bg-color: #F2EDE4; /* Бежевый фон как на фото */
-            --text-color: #4A3B32; /* Темно-коричневый текст */
-            --accent-color: #8C7B6C; /* Акцентный цвет */
-            --font-main: 'Cormorant Garamond', serif; /* Красивый шрифт с засечками */
-            --font-body: 'Montserrat', sans-serif; /* Читабельный шрифт для текста */
+            /* Прозрачность фона для мобильных (0 = полностью прозрачный, 1 = непрозрачный) */
+            --bg-opacity-mobile: 0.6;
+            
+            /* Прозрачность фона для ПК */
+            --bg-opacity-desktop: 0.6;
+            
+            /* Основной цвет текста */
+            --text-color: #264a26;
+            
+            /* Цвет заголовков */
+            --heading-color: #264a26;
+            
+            /* Цвет каллиграфического текста */
+            --calligraphy-color: #264a26;
+            
+            /* Цвет "рукописных" имён гостей (синий как ручкой) */
+            --handwritten-blue: #1a4480;
+            
+            /* Золотистый цвет для имён на фото */
+            --gold-color: #c9a227;
+            
+            /* Базовый цвет фона (виден под изображением) */
+            --bg-base-color: #faf6f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            background-color: var(--bg-color);
+            font-family: 'Cormorant Garamond', Georgia, serif;
             color: var(--text-color);
-            font-family: var(--font-body);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
+            min-height: 100vh;
             overflow-x: hidden;
+            font-size: 28px;
         }
 
-        /* Декоративные цветы (фон) */
-        .floral-bg {
+        /* Фоновое изображение - МОБИЛЬНАЯ ВЕРСИЯ */
+        .background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('flowers.png'); /* Ссылка на похожее фото цветов */
-            background-size: cover;
-            background-position: left center;
-            opacity: 0.15; /* Прозрачность, чтобы не мешало читать */
             z-index: -1;
+            background-color: var(--bg-base-color);
+        }
+
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('bg.png');
+            background-size: cover;
+            background-position: center;
+            opacity: var(--bg-opacity-mobile);
+        }
+
+        /* Фоновое изображение - ПК ВЕРСИЯ */
+        @media (min-width: 768px) {
+            .background::before {
+                background-image: url('bg-pc.png');
+                opacity: var(--bg-opacity-desktop);
+            }
+        }
+
+        /* Каллиграфический шрифт */
+        .calligraphy {
+            font-family: 'Great Vibes', cursive;
+            color: var(--calligraphy-color);
+        }
+
+        /* ============================================
+           КОНВЕРТ (ТИТУЛЬНЫЙ ЛИСТ)
+           ============================================ */
+        .envelope-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            perspective: 1000px;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+        }
+
+        /* Основное тело конверта */
+        .envelope {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(180deg, #e8d4bc 0%, #dcc5a8 100%);
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            /* Увеличиваем отступ сверху, чтобы весь текст располагался ниже печати и клапана */
+            padding-top: 220px;
+        }
+
+        /* Текстура бумаги */
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+            border-radius: 0 0 10px 10px;
             pointer-events: none;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
-
-        h1, h2, h3 {
-            font-family: var(--font-main);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-
-        h1 { font-size: 2.5rem; margin-top: 40px; }
-        h2 { font-size: 1.8rem; color: var(--accent-color); border-bottom: 1px solid var(--accent-color); display: inline-block; padding-bottom: 10px; margin-top: 50px; }
-        
-        .script-font {
-            font-family: var(--font-main);
-            font-style: italic;
-            text-transform: none;
-            font-size: 2rem;
-            margin: 10px 0;
-            display: block;
-        }
-
-        /* Секции */
-        section {
-            margin-bottom: 60px;
-            background: rgba(242, 237, 228, 0.8); /* Полупрозрачная подложка под текст */
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        /* Фото пары */
-        .photo-placeholder {
+        /* Клапан конверта (треугольник сверху) */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 350px;
-            background-color: #ddd;
-            margin: 20px 0;
-            object-fit: cover;
-            border-radius: 5px;
-            /* Вставь сюда ссылку на ваше реальное фото */
-            background-image: url('we.jpg'); 
-            background-size: cover;
-            background-position: center;
+            /* Немного увеличим высоту клапана для гармонии с увеличенным конвертом */
+            height: 160px;
+            /* Закрыт по умолчанию (перевернут). При добавлении класса .opened он откроется */
+            transform: translateY(-99%) rotateX(180deg);
+            transform-origin: bottom center;
+            transition: transform 1.0s ease-in-out;
+            z-index: 10;
         }
 
-        /* Таймер */
-        .countdown {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+        .envelope-flap::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            /* Подогнано под новую максимальную ширину конверта (320+320=640) */
+            border-left: 320px solid transparent;
+            border-right: 320px solid transparent;
+            border-bottom: 160px solid #f5e6d3;
+            filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.1));
         }
-        .countdown-item {
+
+        /* Адаптация клапана под ширину */
+        @media (max-width: 500px) {
+            .envelope-flap::before {
+                border-left: 50vw solid transparent;
+                border-right: 50vw solid transparent;
+                border-bottom: 100px solid #f5e6d3;
+            }
+            .envelope-flap {
+                height: 100px;
+            }
+        }
+
+        .envelope-wrapper.opened .envelope-flap {
+            /* Открытое состояние: клапан разворачивается вверх */
+            transform: translateY(-99%) rotateX(0deg);
+        }
+
+        /* Внутренняя часть клапана (видна при открытии) */
+        .envelope-flap::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 320px solid transparent;
+            border-right: 320px solid transparent;
+            border-bottom: 160px solid #d4c4a8;
+        }
+
+        @media (max-width: 500px) {
+            .envelope-flap::after {
+                border-left: 50vw solid transparent;
+                border-right: 50vw solid transparent;
+                border-bottom: 100px solid #d4c4a8;
+            }
+        }
+
+        /* Подвинем печать для мобильных, где клапан меньше */
+        @media (max-width: 500px) {
+            .seal {
+                top: 100px; /* соответствует мобильной высоте клапана */
+            }
+            .envelope {
+                padding-top: 140px; /* меньше для мобильных, но всё ещё достаточно, чтобы текст был ниже печати */
+            }
+        }
+
+        /* Содержимое конверта */
+        .envelope-content {
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-        .countdown-number {
-            font-family: var(--font-main);
-            font-size: 2rem;
-            font-weight: bold;
-        }
-        .countdown-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
+            text-align: center;
+            z-index: 15;
         }
 
-        /* Кнопка */
-        .btn {
-            background-color: var(--text-color);
-            color: #fff;
-            padding: 15px 40px;
+        .envelope-title {
+            /* Крупное слово 'приглашение' с наклоном, параллельно левому ребру клапана, под ним */
+            position: absolute;
+            top: -130px; /* прямо под клапаном */
+            left: 30px; /* чуть левее центра для параллельности левому ребру */
+            transform: rotate(+27deg); /* наклон параллельно левому ребру треугольника */
+            font-size: clamp(1.525rem, 4vw, 2.325rem); /* крупнее */
+            font-style: italic; /* курсив */
+            color: var(--heading-color);
+            line-height: 1.2;
+            z-index: 16; /* ниже печати (20), но выше треугольника */
+            text-transform: lowercase;
+            letter-spacing: 0.6px;
+            white-space: nowrap; /* чтобы текст не переносился */
+        }
+
+        .envelope-to {
+            align-self: flex-end;
+            margin-right: 5%;
+            margin-bottom: 20px;
+            font-size: clamp(1.325rem, 4vw, 1.625rem);
+            font-style: italic;
+        }
+
+        .guest-names {
+            font-family: 'Great Vibes', cursive;
+            color: var(--handwritten-blue);
+            font-size: 1.3em;
+            border-bottom: 1px solid var(--handwritten-blue);
+            padding-bottom: 2px;
+            margin-left: 5px;
+        }
+
+        .envelope-message {
+            font-size: clamp(1.225rem, 3.5vw, 1.525rem);
+            font-style: italic;
+            max-width: 90%;
+            /* чуть меньший межстрочный интервал для компактности */
+            line-height: 1.45;
+            color: var(--text-color);
+            opacity: 0.9;
+            margin-bottom: -20px; /* убираем нижний отступ */
+            margin-top: auto; /* прижимаем к нижней части конверта */
+        }
+
+        /* Печать-кнопка */
+        .seal {
+            position: absolute;
+            /* Центр печати по горизонтали, вертикально — на стыке клапана (нижняя граница клапана) */
+            top: 145px; /* соответствует .envelope-flap height */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: clamp(90px, 22vw, 120px);
+            height: clamp(90px, 22vw, 120px);
+            background: radial-gradient(circle at 30% 30%, #c41e3a 0%, #8b0000 50%, #5c0000 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.4),
+                inset 0 2px 5px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: 3px solid #6b0000;
+            z-index: 20;
+        }
+
+        .seal:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+            box-shadow: 
+                0 6px 20px rgba(0, 0, 0, 0.5),
+                inset 0 2px 5px rgba(255, 255, 255, 0.3),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .seal:active {
+            transform: translate(-50%, -50%) scale(0.98);
+        }
+
+        .seal-text {
+            color: #ffd700;
+            /* Уменьшаем размер шрифта печати на ~2px */
+            font-size: clamp(0.65rem, 2.2vw, 0.85rem);
+            font-weight: normal;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            line-height: 1.3;
+        }
+
+        .envelope-wrapper.opened .seal {
+            opacity: 0;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        /* ============================================
+           ОСНОВНОЕ СОДЕРЖИМОЕ
+           ============================================ */
+        .main-content {
+            display: none;
+            opacity: 0;
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInContent 1s ease forwards;
+        }
+
+        .main-content.visible {
+            display: block;
+        }
+
+        @keyframes fadeInContent {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Эпиграф */
+        .epigraph {
+            text-align: center;
+            font-style: italic;
+            font-size: clamp(1.425rem, 4vw, 1.825rem);
+            line-height: 1.8;
+            margin-bottom: 50px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .epigraph::before,
+        .epigraph::after {
+            font-size: 3em;
+            color: var(--gold-color);
+            opacity: 0.5;
+            position: absolute;
+        }
+
+        .epigraph::before {
+            content: '«';
+            top: 0;
+            left: -5px; /* расширяем дополнительно для видимого эффекта */
+        }
+
+        .epigraph::after {
+            content: '»';
+            bottom: 0;
+            right: -5px; /* расширяем дополнительно для видимого эффекта */
+        }
+
+        .strikethrough {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .epigraph .calligraphy {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1em;
+            font-style: italic;
+        }
+
+        /* Фотокарточка */
+        .photo-card {
+            position: relative;
+            width: 90%;
+            max-width: 400px;
+            margin: 0 auto 60px;
+            transform: rotate(-2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .photo-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .photo-frame {
+            background: white;
+            padding: 15px;
+            padding-bottom: 60px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .photo-placeholder {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            background: linear-gradient(135deg, #f0e6d8 0%, #e0d0c0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+            font-size: 1.4rem;
+        }
+
+        .photo-caption {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.525rem, 5vw, 1.925rem);
+            color: var(--gold-color);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Информационные блоки - 4 строки */
+        .info-section {
+            margin-bottom: 50px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .info-question {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.625rem, 5vw, 2.125rem);
+            color: var(--text-color);
+            text-align: left;
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        .info-answer {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.625rem, 5vw, 2.125rem);
+            color: var(--text-color);
+            text-align: right;
+            font-weight: normal;
+            max-width: 80%;
+        }
+
+        .info-text {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.325rem, 3.5vw, 1.625rem);
+            line-height: 1.7;
+            margin: 30px 0;
+            font-weight: normal;
+        }
+
+        /* Кнопка карты */
+        .map-button {
+            display: inline-block;
+            margin: 20px 0 40px;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #668455 0%, #4a6340 100%);
+            color: white;
             text-decoration: none;
             border-radius: 30px;
-            font-family: var(--font-body);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: inline-block;
-            cursor: pointer;
-            border: none;
-            margin-top: 20px;
-            transition: 0.3s;
-        }
-        .btn:hover {
-            background-color: var(--accent-color);
+            font-size: 1.35rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: normal;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 132, 85, 0.4);
         }
 
-        /* Форма опроса */
-        #rsvp-modal {
-            display: none; /* Скрыто по умолчанию */
-            margin-top: 30px;
-            text-align: left;
-            border: 1px solid var(--accent-color);
-            padding: 20px;
-            background: #fff;
+        .map-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 132, 85, 0.5);
         }
 
-        .form-group {
+        /* Дресс-код */
+        .dresscode {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .dresscode-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.925rem, 6vw, 2.525rem);
+            color: var(--text-color);
             margin-bottom: 20px;
+            font-weight: normal;
         }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
+
+        .dresscode-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.325rem, 3.5vw, 1.525rem);
+            line-height: 1.7;
+            margin-bottom: 30px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: normal;
         }
-        select, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-family: var(--font-body);
-        }
-        .checkbox-group {
+
+        .color-palette {
             display: flex;
+            flex-direction: column;
+            gap: 15px;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .checkbox-group input {
-            width: 20px;
-            height: 20px;
         }
 
-        .map-container iframe {
+        .color-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .color-circle {
+            width: clamp(45px, 12vw, 60px);
+            height: clamp(45px, 12vw, 60px);
+            border-radius: 50%;
+            box-shadow: 
+                0 3px 10px rgba(0, 0, 0, 0.2),
+                inset 0 2px 5px rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.15);
+        }
+
+        /* Текст про погоду в дресс-коде */
+        .dresscode-additional {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            line-height: 1.7;
+            margin-top: 25px;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--text-color);
+        }
+
+        /* Пожелания */
+        .wishes {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .wishes-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.925rem, 6vw, 2.525rem);
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .wishes-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            line-height: 1.7;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--text-color);
+        }
+
+        /* RSVP */
+        .rsvp-section {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .rsvp-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 4vw, 1.6rem);
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+
+        .rsvp-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .rsvp-button {
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+            border: 2px solid var(--text-color);
+            background: white;
+            color: var(--text-color);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: normal;
+        }
+
+        .rsvp-button:hover:not(:disabled) {
+            background: var(--text-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .rsvp-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .rsvp-yes.active {
+            background: #668455;
+            color: white;
+            border-color: #668455;
+        }
+
+        .rsvp-no.active {
+            background: #c41e3a;
+            color: white;
+            border-color: #c41e3a;
+        }
+
+        /* Комментарии */
+        .comments-section {
+            margin: 50px 0;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .comments-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .comment-input {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
             width: 100%;
-            height: 400px;
-            border: none;
+            padding: 15px;
+            border: 2px solid var(--text-color);
             border-radius: 10px;
+            margin-bottom: 15px;
+            resize: vertical;
+            color: var(--text-color);
         }
 
-        /* Анимация появления */
-        .fade-in {
-            animation: fadeIn 2s ease-in;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .comment-input::placeholder {
+            color: rgba(0, 0, 0, 0.3);
         }
 
+        .comment-submit {
+            padding: 12px 40px;
+            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, #668455 0%, #4a6340 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: normal;
+        }
+
+        .comment-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 132, 85, 0.5);
+        }
+
+        /* Обратный отсчёт */
+        .countdown {
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 50px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.5) 100%);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .countdown-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.725rem, 5vw, 2.325rem);
+            color: var(--text-color);
+            margin-bottom: 35px;
+            font-weight: normal;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: clamp(20px, 6vw, 50px);
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-number {
+            font-size: clamp(2.625rem, 10vw, 4.125rem);
+            font-weight: normal;
+            color: var(--text-color);
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: clamp(1.125rem, 3vw, 1.325rem);
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        /* Скрытие конверта после открытия */
+        .envelope-container.hidden {
+            display: none;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .info-row {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 5px;
+            }
+            
+            .info-question {
+                text-align: center;
+            }
+            
+            .info-answer {
+                text-align: center;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="background"></div>
 
-    <div class="floral-bg"></div>
-
-    <div class="container fade-in">
-        
-        <!-- СЕКЦИЯ 1: Приветствие -->
-        <section id="welcome">
-            <div style="font-size: 1.2rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;">Приглашение</div>
-            <h1 id="guest-name-display">Дорогие гости!</h1>
-            <p>Приглашаем вас на нашу свадьбу</p>
-            <div class="script-font">Анастасия и Артём</div>
-            <p>18 Июля 2026</p>
-        </section>
-
-        <!-- СЕКЦИЯ 2: Инфо о паре и таймер -->
-        <section id="info">
-            <h2>Детали дня</h2>
-            <!-- Место под фото -->
-            <div class="photo-placeholder"></div>
+    <!-- КОНВЕРТ -->
+    <div class="envelope-container" id="envelopeContainer">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <!-- Клапан конверта -->
+            <div class="envelope-flap"></div>
             
-            <p><strong>МЕСТО ПРОВЕДЕНИЯ</strong><br>
-            Кировская область, турбаза "Шунский берег"</p>
+            <!-- Печать на стыке клапана и тела -->
+            <button class="seal" id="seal" onclick="openEnvelope()">
+                <span class="seal-text">Нажмите<br>чтобы<br>открыть</span>
+            </button>
             
-            <p><strong>ВРЕМЯ</strong><br>
-            Сбор гостей в 14:00</p>
-
-            <div class="countdown" id="countdown">
-                <div class="countdown-item"><span class="countdown-number" id="days">0</span><span class="countdown-label">Дней</span></div>
-                <div class="countdown-item"><span class="countdown-number" id="hours">0</span><span class="countdown-label">Часов</span></div>
-                <div class="countdown-item"><span class="countdown-number" id="minutes">0</span><span class="countdown-label">Минут</span></div>
-                <div class="countdown-item"><span class="countdown-number" id="seconds">0</span><span class="countdown-label">Секунд</span></div>
+            <!-- Тело конверта -->
+            <div class="envelope">
+                <div class="envelope-content">
+                    <!-- <h1 class="envelope-title">приглашение</h1> -->
+                    <p class="envelope-to">
+                        Кому: <span class="guest-names" id="guestNames"> </span>
+                    </p>
+                    <p class="envelope-message">
+                        Мы будем рады, если вы проведёте<br>
+                        вместе с нами этот особенный день
+                    </p>
+                </div>
             </div>
-        </section>
-
-        <!-- СЕКЦИЯ 3: Орг моменты -->
-        <section id="details">
-            <h2>Дресс-код</h2>
-            <p>Мы будем очень рады, если вы поддержите цветовую гамму нашей свадьбы.</p>
-            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
-                <!-- Кружочки с цветами -->
-                <div style="width: 30px; height: 30px; border-radius: 50%; background: #E6D0B3;"></div>
-                <div style="width: 30px; height: 30px; border-radius: 50%; background: #C4A484;"></div>
-                <div style="width: 30px; height: 30px; border-radius: 50%; background: #8C7B6C;"></div>
-                <div style="width: 30px; height: 30px; border-radius: 50%; background: #5C4B40;"></div>
-            </div>
-            <br>
-            <p>Просим воздержаться от спортивного стиля и ярко-красных цветов.</p>
-        </section>
-
-
-        <!-- СЕКЦИЯ 5: Карта -->
-        <section id="map">
-            <h2>Как добраться</h2>
-            <p>Ждем вас по адресу: Кировская область, пример адреса.</p>
-            <div class="map-container">
-                <!-- Вставлен пример карты Кирова. Замени src на свою ссылку из Яндекс.Карт -->
-                <iframe src="https://yandex.ru/map-widget/v1/?ll=49.667978%2C58.603595&z=12" allowfullscreen="true"></iframe>
-            </div>
-        </section>
-
-        <footer>
-            <p class="script-font" style="font-size: 1.5rem;">До встречи!</p>
-        </footer>
-
+        </div>
     </div>
 
-    <!-- === СКРИПТЫ (JavaScript) === -->
+    <!-- ОСНОВНОЕ СОДЕРЖИМОЕ -->
+    <div class="main-content" id="mainContent">
+        
+        <!-- Эпиграф -->
+        <div class="epigraph">
+            Я пригласил вас, господа, с тем, чтобы сообщить вам приятнейшее известие:
+            <span class="strikethrough">к нам едет ревизор</span>
+            <span class="calligraphy">мы — женимся!</span>
+        </div>
+
+        <!-- Фотокарточка -->
+        <div class="photo-card">
+            <div class="photo-frame">
+                <img src="we.jpg" alt="Анастасия и Артём">
+            </div>
+            <div class="photo-caption">Анастасия & Артём</div>
+        </div>
+
+        <!-- Информация в 4 строки -->
+        <div class="info-section">
+            <div class="info-row">
+                <span class="info-question">Когда?</span>
+                <span class="info-answer">18.07.2026</span>
+            </div>
+            
+            <div class="info-row">
+                <span class="info-question">Где?</span>
+                <span class="info-answer">Турбаза «Шунский берег», Кировская область</span>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="https://yandex.com/maps/-/CPq4FUM-" target="_blank" class="map-button">
+                    📍 Посмотреть на карте
+                </a>
+            </div>
+
+            <p class="info-text">
+                Сбор гостей на месте в 14:00<br><br>
+                Для наших иногородних гостей будет организован трансфер из Вятских Полян и обратно
+            </p>
+        </div>
+
+        <!-- Дресс-код -->
+        <div class="dresscode">
+            <h2 class="dresscode-title">Дресс-код</h2>
+            <p class="dresscode-text">
+                Мы знаем, вы прекрасны в любом наряде! Но нам будет особенно приятно, 
+                если вы поддержите цветовую гамму торжества
+            </p>
+            <div class="color-palette">
+                <div class="color-row">
+                    <div class="color-circle" style="background-color: #E18350;"></div>
+                    <div class="color-circle" style="background-color: #F3C073;"></div>
+                    <div class="color-circle" style="background-color: #668455;"></div>
+                    <div class="color-circle" style="background-color: #C76961;"></div>
+                    <div class="color-circle" style="background-color: #6E3324;"></div>
+                </div>
+                <div class="color-row">
+                    <div class="color-circle" style="background-color: #FFCFAB;"></div>
+                    <div class="color-circle" style="background-color: #F3E7B2;"></div>
+                    <div class="color-circle" style="background-color: #C0D1AE;"></div>
+                    <div class="color-circle" style="background-color: #F7B1AB;"></div>
+                    <div class="color-circle" style="background-color: #DEBFB0;"></div>
+                </div>
+            </div>
+            <p class="dresscode-additional">
+                Мероприятие будет в значительной степени проходить на свежем воздухе, поэтому одежду и обувь просим подбирать по погоде
+            </p>
+        </div>
+
+        <!-- Пожелания -->
+        <div class="wishes">
+            <h2 class="wishes-title">Пожелания</h2>
+            <p class="wishes-text">
+                Просим воздержаться от дарения цветов и других крупногабаритных подарков
+            </p>
+        </div>
+
+        <!-- RSVP -->
+        <div class="rsvp-section">
+            <p class="rsvp-text">Просим подтвердить своё присутствие не позднее 30 апреля</p>
+            <div class="rsvp-buttons">
+                <button class="rsvp-button rsvp-yes" id="rsvpYes" onclick="setRSVP('yes')">Подтвердить</button>
+                <button class="rsvp-button rsvp-no" id="rsvpNo" onclick="setRSVP('no')">Отказаться</button>
+            </div>
+        </div>
+
+        <!-- Комментарии -->
+        <div class="comments-section">
+            <p class="comments-text">
+                Если вы хотите оставить для нас комментарий или уведомить об отсутствии одного из гостей в приглашении, напишите нам
+            </p>
+            <textarea 
+                id="commentInput" 
+                class="comment-input" 
+                placeholder="Ваш комментарий..." 
+                rows="4"
+            ></textarea>
+            <button class="comment-submit" onclick="submitComment()">Отправить</button>
+        </div>
+        <div class="countdown">
+            <h2 class="countdown-title">До нашего дня осталось</h2>
+            <div class="countdown-timer">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">000</div>
+                    <div class="countdown-label">дней</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">часов</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">минут</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">секунд</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // === 1. БАЗА ГОСТЕЙ ===
-        // Редактируй этот список! Ключ (например, 'family1') - это то, что ты пишешь в ссылке.
-        const guestsDatabase = {
-            'parents': ['Мама', 'Папа'],
-            'petrov': ['Дмитрий'],
-            'smirnovs': ['Алексей', 'Мария', 'Ванечка'],
-            'default': ['Гость'] // Если ссылка без кода
+        // ============================================
+        // БАЗА ДАННЫХ ГОСТЕЙ
+        // ============================================
+        // URL вашего Apps Script Web App (замените на свой)
+        const webAppUrl = 'https://script.google.com/macros/s/AKfycbxYBXn4OqjXQJrInVTuWY1CdemgpwKzNPUthLasI7KQt8XQqFLX4fJ8ti808Rt9dSJl/exec';
+
+        const guestGroups = {
+            'default': 'Дорогой гость'
         };
 
-        // Получаем параметры из ссылки (например, site.ru/?id=ivanovs)
-        const urlParams = new URLSearchParams(window.location.search);
-        const guestId = urlParams.get('id') || 'default';
-        const currentGuests = guestsDatabase[guestId] || guestsDatabase['default'];
+        // Получение имён гостей из URL
+        function getGuestNames() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const groupId = urlParams.get('group') || 'default';
+            return guestGroups[groupId] || guestGroups['default'];
+        }
 
-        // === 2. ПЕРСОНАЛИЗАЦИЯ ===
-        function setGuestNames() {
-            const titleElement = document.getElementById('guest-name-display');
-            if (guestId === 'default') {
-                titleElement.innerText = "Дорогие гости!";
-            } else {
-                // Если гостей больше одного, пишем "Дорогие...", иначе "Дорогой..."
-                const prefix = currentGuests.length > 1 ? "Дорогие" : "Дорогой(ая)";
-                titleElement.innerText = `${prefix} ${currentGuests.join(' и ')}!`;
+        // Загрузка словаря гостевых групп из Google Sheet
+        async function loadGuestGroups() {
+            try {
+                const response = await fetch(webAppUrl + '?action=getGuests');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                Object.assign(guestGroups, data);
+                // обновим на странице уже установленные имена, если нужно
+                document.getElementById('guestNames').textContent = getGuestNames();
+            } catch (err) {
+                console.error('Не удалось загрузить guestGroups:', err);
             }
         }
-        setGuestNames();
 
-        // === 4. ТАЙМЕР ОБРАТНОГО ОТСЧЕТА ===
-        const weddingDate = new Date("July 18, 2026 14:00:00").getTime();
+        // вызываем загрузку после определения webAppUrl
+        loadGuestGroups();
 
-        const timer = setInterval(function() {
-            const now = new Date().getTime();
-            const distance = weddingDate - now;
+        // Открытие конверта
+        function openEnvelope() {
+            const envelopeWrapper = document.getElementById('envelopeWrapper');
+            const envelopeContainer = document.getElementById('envelopeContainer');
+            const mainContent = document.getElementById('mainContent');
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            // Открываем клапан
+            envelopeWrapper.classList.add('opened');
 
-            document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = hours;
-            document.getElementById("minutes").innerText = minutes;
-            document.getElementById("seconds").innerText = seconds;
+            // После анимации клапана показываем контент
+            setTimeout(() => {
+                envelopeContainer.style.opacity = '0';
+                envelopeContainer.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(() => {
+                    envelopeContainer.classList.add('hidden');
+                    mainContent.classList.add('visible');
+                    window.scrollTo(0, 0);
+                }, 500);
+            }, 800);
+        }
 
-            if (distance < 0) {
-                clearInterval(timer);
-                document.getElementById("countdown").innerHTML = "Ура! Свадьба состоялась!";
+        // Обратный отсчёт
+        function updateCountdown() {
+            const weddingDate = new Date('2026-07-18T14:00:00');
+            const now = new Date();
+            const diff = weddingDate - now;
+
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(3, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
             }
-        }, 1000);
+        }
 
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // ============================================
+        // RSVP И КОММЕНТАРИИ
+        // ============================================
+
+        // Получить ID группы гостей из URL
+        function getGroupId() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('group') || 'default';
+        }
+
+        // Функция для установки ответа (Да/Нет)
+        function setRSVP(choice) {
+            const yesBtn = document.getElementById('rsvpYes');
+            const noBtn = document.getElementById('rsvpNo');
+            const groupId = getGroupId();
+
+            if (choice === 'yes') {
+                yesBtn.classList.add('active');
+                yesBtn.disabled = true;
+                noBtn.classList.remove('active');
+                noBtn.disabled = false;
+                sendToGoogleSheet(groupId, 'rsvp', 'Да');
+            } else if (choice === 'no') {
+                noBtn.classList.add('active');
+                noBtn.disabled = true;
+                yesBtn.classList.remove('active');
+                yesBtn.disabled = false;
+                sendToGoogleSheet(groupId, 'rsvp', 'Нет');
+            }
+        }
+
+        // Функция для отправки комментария
+        function submitComment() {
+            const commentText = document.getElementById('commentInput').value.trim();
+            const groupId = getGroupId();
+
+            if (commentText.length === 0) {
+                alert('Пожалуйста, введите комментарий');
+                return;
+            }
+
+            sendToGoogleSheet(groupId, 'comment', commentText);
+            document.getElementById('commentInput').value = '';
+            alert('Комментарий отправлен!');
+        }
+
+        // Функция для отправки данных в Google Sheet
+        function sendToGoogleSheet(groupId, type, value) {
+            console.log('Отправка:', { groupId, type, value });
+            
+            fetch(webAppUrl, {
+                method: 'POST',
+                body: JSON.stringify({ groupId, type, value }),
+                mode: 'no-cors'
+            })
+            .catch(err => console.error('Ошибка отправки:', err));
+        }
     </script>
 </body>
 </html>
