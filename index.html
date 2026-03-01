@@ -169,9 +169,9 @@
             left: 0;
             width: 0;
             height: 0;
-            /* треугольник всегда растёт до половины ширины контейнера */
-            border-left: 50% solid transparent;
-            border-right: 50% solid transparent;
+            /* на мобильных: половина ширины контейнера ~45vw (контейнер 90vw) */
+            border-left: 45vw solid transparent;
+            border-right: 45vw solid transparent;
         }
 
         .envelope-flap::before {
@@ -195,6 +195,11 @@
         @media (min-width: 501px) {
             .envelope-flap {
                 height: 160px;
+            }
+            .envelope-flap::before,
+            .envelope-flap::after {
+                border-left: 320px solid transparent;
+                border-right: 320px solid transparent;
             }
             .envelope-flap::before {
                 border-bottom: 160px solid #f5e6d3;
