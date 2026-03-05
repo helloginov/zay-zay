@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Свадебное приглашение</title>
+    <title>Приглашение</title>
     
     <!-- Подключение шрифтов -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,19 +16,19 @@
            ============================================ */
         :root {
             /* Прозрачность фона для мобильных (0 = полностью прозрачный, 1 = непрозрачный) */
-            --bg-opacity-mobile: 0.6;
+            --bg-opacity-mobile: 0.3;
             
             /* Прозрачность фона для ПК */
-            --bg-opacity-desktop: 0.6;
+            --bg-opacity-desktop: 0.3;
             
             /* Основной цвет текста */
-            --text-color: #1b3b1b;
+            --text-color: #411e1e;
             
             /* Цвет заголовков */
-            --heading-color: #264a26;
+            --heading-color: #411e1e;
             
             /* Цвет каллиграфического текста */
-            --calligraphy-color: #264a26;
+            --calligraphy-color: #411e1e;
             
             /* Цвет "рукописных" имён гостей (синий как ручкой) */
             --handwritten-blue: #1a4480;
@@ -38,6 +38,9 @@
             
             /* Базовый цвет фона (виден под изображением) */
             --bg-base-color: #faf6f0;
+            
+            /* Отступ между секциями */
+            --section-gap: 80px;
         }
 
         * {
@@ -51,12 +54,17 @@
             color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
-            /* мобильный базовый размер шрифта чуть меньше */
-            font-size: 24px;
+            font-size: 26px;
+            font-weight: 500;
         }
+        
         @media (min-width: 501px) {
             body {
-                font-size: 28px;
+                font-size: 30px;
+            }
+            
+            :root {
+                --section-gap: 100px;
             }
         }
 
@@ -109,14 +117,9 @@
             padding: 20px;
             perspective: 1000px;
         }
-        /* скрываем контейнер до загрузки имён */
-        .envelope-container.hidden-load {
-            visibility: hidden;
-        }
 
         .envelope-wrapper {
             position: relative;
-            /* мобильная ширина: чуть меньше экрана, чтобы не прилегать к краю */
             width: 90vw;
             max-width: 640px;
         }
@@ -125,12 +128,11 @@
         .envelope {
             position: relative;
             width: 100%;
-            background: linear-gradient(180deg, #e8d4bc 0%, #dcc5a8 100%);
+            background: linear-gradient(180deg, #e8d4bc 0%, #c7a77f 100%);
             border-radius: 0 0 10px 10px;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
             padding: 30px;
-            /* Увеличиваем отступ сверху, чтобы весь текст располагался ниже печати и клапана */
-            padding-top: 220px;
+            padding-top: 250px;
         }
 
         /* Текстура бумаги */
@@ -146,15 +148,13 @@
             pointer-events: none;
         }
 
-        /* Клапан конверта (треугольник сверху) - mobile first */
+        /* Клапан конверта (треугольник сверху) */
         .envelope-flap {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            /* мобильная высота клапана */
-            height: 100px;
-            /* Закрыт по умолчанию (перевернут). При добавлении класса .opened он откроется */
+            height: 126px;
             transform: translateY(-99%) rotateX(180deg);
             transform-origin: bottom center;
             transition: transform 1.0s ease-in-out;
@@ -169,32 +169,86 @@
             left: 0;
             width: 0;
             height: 0;
-            /* на мобильных: половина ширины контейнера ~45vw (контейнер 90vw) */
             border-left: 45vw solid transparent;
             border-right: 45vw solid transparent;
         }
 
         .envelope-flap::before {
-            border-bottom: 100px solid #f5e6d3;
-            filter: drop-shadow(0 -3px 5px rgba(0,0,0,0.1));
+            border-bottom: 126px solid #e0d2c0;
+            filter: drop-shadow(0 -4px 3px rgba(0,0,0,0.15));
         }
 
         .envelope-flap::after {
-            border-bottom: 100px solid #d4c4a8;
+            border-bottom: 126px solid #bfa78f;
+        }
+
+        .flap-text {
+            position: absolute;
+            top: 135px;
+            left: 50%;
+            transform: translateX(-50%) rotateX(180deg);
+            font-family: 'Great Vibes', cursive;
+            font-style: normal;
+            font-size: clamp(1.2rem, 2.8vw, 1.7rem);
+            color: var(--heading-color);
+            letter-spacing: 0.6px;
+            z-index: 11;
+            transition: all 1.0s ease-in-out;
+            opacity: 1;
+            display: flex;
+            flex-direction: column;
+            width: 180px;
+            line-height: 1.05;
+        }
+
+        .flap-line {
+            flex: 1;
+        }
+
+        .flap-left {
+            text-align: left;
+        }
+
+        .flap-right {
+            text-align: right;
+        }
+
+        .envelope-wrapper.opened .flap-text {
+            animation: flapTextDisappear 1.0s ease-in-out forwards;
+        }
+
+        @keyframes flapTextDisappear {
+            0% {
+                transform: translateX(-50%) rotateX(180deg);
+                opacity: 1;
+            }
+            45% {
+                transform: translateX(-50%) rotateX(90deg);
+                opacity: 1;
+            }
+            55% {
+                transform: translateX(-50%) rotateX(90deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(-50%) rotateX(0deg);
+                opacity: 0;
+            }
         }
 
         /* печать и отступы по умолчанию для мобильных */
         .seal {
-            top: 100px;
+            top: 142px;
         }
+        
         .envelope {
-            padding-top: 200px;
+            padding-top: 250px;
         }
 
         /* увеличиваем всё для экранов шире 500px (десктоп/планшет) */
         @media (min-width: 501px) {
             .envelope-flap {
-                height: 160px;
+                height: 189px;
             }
             .envelope-flap::before,
             .envelope-flap::after {
@@ -202,16 +256,21 @@
                 border-right: 320px solid transparent;
             }
             .envelope-flap::before {
-                border-bottom: 160px solid #f5e6d3;
+                border-bottom: 189px solid #f5e6d3;
             }
             .envelope-flap::after {
-                border-bottom: 160px solid #d4c4a8;
+                border-bottom: 189px solid #d4c4a8;
+            }
+            .flap-text {
+                top: 90px;
+                font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+                width: 230px;
             }
             .seal {
-                top: 145px;
+                top: 194px;
             }
             .envelope {
-                padding-top: 220px;
+                padding-top: 270px;
             }
         }
 
@@ -222,31 +281,15 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            justify-content: flex-end;
             z-index: 15;
-        }
-
-        .envelope-title {
-            /* Крупное слово 'приглашение' с наклоном, параллельно левому ребру клапана, под ним */
-            position: absolute;
-            top: -130px; /* прямо под клапаном */
-            left: 30px; /* чуть левее центра для параллельности левому ребру */
-            transform: rotate(+27deg); /* наклон параллельно левому ребру треугольника */
-            font-size: clamp(1.525rem, 4vw, 2.325rem); /* крупнее */
-            font-style: italic; /* курсив */
-            color: var(--heading-color);
-            line-height: 1.2;
-            z-index: 16; /* ниже печати (20), но выше треугольника */
-            text-transform: lowercase;
-            letter-spacing: 0.6px;
-            white-space: nowrap; /* чтобы текст не переносился */
         }
 
         .envelope-to {
             align-self: flex-end;
             margin-right: 5%;
-            margin-bottom: 20px;
-            font-size: clamp(1.325rem, 4vw, 1.625rem);
-            font-style: italic;
+            margin-bottom: 35px;
+            font-size: clamp(1.425rem, 4.5vw, 1.825rem);
         }
 
         .guest-names {
@@ -262,45 +305,41 @@
             font-size: clamp(1.225rem, 3.5vw, 1.525rem);
             font-style: italic;
             max-width: 90%;
-            /* чуть меньший межстрочный интервал для компактности */
             line-height: 1.45;
             color: var(--text-color);
             opacity: 0.9;
-            margin-bottom: -20px; /* убираем нижний отступ */
-            margin-top: auto; /* прижимаем к нижней части конверта */
+            margin-bottom: -20px;
+            margin-top: auto;
         }
 
         /* Печать-кнопка */
         .seal {
             position: absolute;
-            /* Центр печати по горизонтали, вертикально — на стыке клапана (нижняя граница клапана) */
-            top: 145px; /* соответствует .envelope-flap height */
             left: 50%;
             transform: translate(-50%, -50%);
-            width: clamp(90px, 22vw, 120px);
-            height: clamp(90px, 22vw, 120px);
-            background: radial-gradient(circle at 30% 30%, #c41e3a 0%, #8b0000 50%, #5c0000 100%);
-            border-radius: 50%;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            box-shadow: 
-                0 4px 15px rgba(0, 0, 0, 0.4),
-                inset 0 2px 5px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            border: 3px solid #6b0000;
+            background: none;
+            border: none;
+            padding: 0;
             z-index: 20;
+            transition: all 0.3s ease;
+            min-width: 120px;
+            min-height: 120px;
         }
 
-        .seal:hover {
-            transform: translate(-50%, -50%) scale(1.05);
-            box-shadow: 
-                0 6px 20px rgba(0, 0, 0, 0.5),
-                inset 0 2px 5px rgba(255, 255, 255, 0.3),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.3);
+        .seal-image {
+            width: clamp(108px, 26.4vw, 144px);
+            height: auto;
+            display: block;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.4));
+        }
+
+        .seal:hover .seal-image {
+            filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.5));
         }
 
         .seal:active {
@@ -308,21 +347,29 @@
         }
 
         .seal-text {
-            color: #ffd700;
-            /* Уменьшаем размер шрифта печати на ~2px */
-            font-size: clamp(0.65rem, 2.2vw, 0.85rem);
-            font-weight: normal;
+            position: absolute;
+            color: #8d6802;
+            font-size: clamp(0.8rem, 2.7vw, 1.0rem);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            text-shadow: 
+                1px 1px 0px rgba(255, 255, 255, 0.25),
+                -1px -1px 1px rgba(0, 0, 0, 0.7),
+                -2px -2px 3px rgba(255, 255, 255, 0.15);
             padding: 10px;
-            line-height: 1.3;
+            padding-left: 23px;
+            line-height: 1.1;
+            pointer-events: none;
         }
 
         .envelope-wrapper.opened .seal {
             opacity: 0;
             pointer-events: none;
             transform: translate(-50%, -50%) scale(0);
+        }
+
+        .envelope-wrapper.opened .envelope-flap {
+            transform: translateY(-99%) rotateX(0deg);
         }
 
         /* ============================================
@@ -356,9 +403,9 @@
         .epigraph {
             text-align: center;
             font-style: italic;
-            font-size: clamp(1.425rem, 4vw, 1.825rem);
+            font-size: clamp(1.325rem, 4vw, 1.825rem);
             line-height: 1.8;
-            margin-bottom: 50px;
+            margin-bottom: var(--section-gap);
             padding: 30px;
             position: relative;
         }
@@ -374,13 +421,13 @@
         .epigraph::before {
             content: '«';
             top: 0;
-            left: -5px; /* расширяем дополнительно для видимого эффекта */
+            left: -5px;
         }
 
         .epigraph::after {
             content: '»';
             bottom: 0;
-            right: -5px; /* расширяем дополнительно для видимого эффекта */
+            right: -5px;
         }
 
         .strikethrough {
@@ -399,8 +446,8 @@
             position: relative;
             width: 90%;
             max-width: 400px;
-            margin: 0 auto 60px;
-            transform: rotate(-2deg);
+            margin: 0 auto var(--section-gap);
+            transform: rotate(-4deg);
             transition: transform 0.3s ease;
         }
 
@@ -423,17 +470,6 @@
             display: block;
         }
 
-        .photo-placeholder {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            background: linear-gradient(135deg, #f0e6d8 0%, #e0d0c0 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #999;
-            font-size: 1.4rem;
-        }
-
         .photo-caption {
             position: absolute;
             bottom: 15px;
@@ -446,9 +482,9 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        /* Информационные блоки - 4 строки */
+        /* Информационные блоки */
         .info-section {
-            margin-bottom: 50px;
+            margin-bottom: var(--section-gap);
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
@@ -477,15 +513,16 @@
             color: var(--text-color);
             text-align: right;
             font-weight: normal;
-            max-width: 80%;
+            max-width: 60%;
         }
 
         .info-text {
             text-align: center;
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.325rem, 3.5vw, 1.625rem);
+            font-style: italic;
+            font-size: clamp(1.625rem, 5vw, 2.125rem);
             line-height: 1.7;
-            margin: 30px 0;
+            margin: 30px 0 var(--section-gap);
             font-weight: normal;
         }
 
@@ -513,7 +550,7 @@
         /* Дресс-код */
         .dresscode {
             text-align: center;
-            margin: 40px 0;
+            margin-bottom: var(--section-gap);
         }
 
         .dresscode-title {
@@ -526,7 +563,8 @@
 
         .dresscode-text {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.325rem, 3.5vw, 1.525rem);
+            font-style: italic;
+            font-size: clamp(1.625rem, 5vw, 2.125rem);
             line-height: 1.7;
             margin-bottom: 30px;
             max-width: 550px;
@@ -563,10 +601,10 @@
             transform: scale(1.15);
         }
 
-        /* Текст про погоду в дресс-коде */
         .dresscode-additional {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            font-style: italic;
+            font-size: clamp(1.625rem, 5vw, 2.125rem);
             line-height: 1.7;
             margin-top: 25px;
             max-width: 550px;
@@ -578,7 +616,7 @@
         /* Пожелания */
         .wishes {
             text-align: center;
-            margin: 50px 0;
+            margin-bottom: var(--section-gap);
         }
 
         .wishes-title {
@@ -591,7 +629,8 @@
 
         .wishes-text {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
+            font-style: italic;
+            font-size: clamp(1.625rem, 5vw, 2.125rem);
             line-height: 1.7;
             max-width: 550px;
             margin-left: auto;
@@ -599,118 +638,63 @@
             color: var(--text-color);
         }
 
-        /* RSVP */
+        /* RSVP секция */
         .rsvp-section {
             text-align: center;
-            margin: 50px 0;
+            margin-bottom: var(--section-gap);
         }
 
         .rsvp-text {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.3rem, 4vw, 1.6rem);
-            margin-bottom: 30px;
-            color: var(--text-color);
-        }
-
-        .rsvp-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .rsvp-button {
-            padding: 12px 40px;
-            font-size: 1.2rem;
-            font-family: 'Cormorant Garamond', serif;
-            border: 2px solid var(--text-color);
-            background: white;
-            color: var(--text-color);
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: normal;
-        }
-
-        .rsvp-button:hover:not(:disabled) {
-            background: var(--text-color);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .rsvp-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .rsvp-yes.active {
-            background: #668455;
-            color: white;
-            border-color: #668455;
-        }
-
-        .rsvp-no.active {
-            background: #c41e3a;
-            color: white;
-            border-color: #c41e3a;
-        }
-
-        /* Комментарии */
-        .comments-section {
-            margin: 50px 0;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
-
-        .comments-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.2rem, 3.5vw, 1.4rem);
-            line-height: 1.7;
+            font-size: clamp(1.625rem, 5vw, 2.125rem);
             margin-bottom: 20px;
             color: var(--text-color);
+            line-height: 1.6;
         }
 
-        .comment-input {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            width: 100%;
-            padding: 15px;
-            border: 2px solid var(--text-color);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            resize: vertical;
-            color: var(--text-color);
-        }
-
-        .comment-input::placeholder {
-            color: rgba(0, 0, 0, 0.3);
-        }
-
-        .comment-submit {
-            padding: 12px 40px;
-            font-size: 1.2rem;
-            font-family: 'Cormorant Garamond', serif;
+        .form-button {
+            display: inline-block;
+            padding: 15px 45px;
             background: linear-gradient(135deg, #668455 0%, #4a6340 100%);
             color: white;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+            font-family: 'Cormorant Garamond', serif;
             font-weight: normal;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 132, 85, 0.4);
         }
 
-        .comment-submit:hover {
+        .form-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 132, 85, 0.5);
+        }
+
+        .form-button:active {
+            transform: translateY(0);
+        }
+
+        /* Финальное сообщение */
+        .final-message {
+            text-align: center;
+            margin-bottom: var(--section-gap);
+        }
+
+        .final-message p {
+            font-size: clamp(1.225rem, 3.5vw, 1.525rem);
+            font-style: italic;
+            max-width: 90%;
+            line-height: 1.6;
+            color: var(--text-color);
+            opacity: 0.9;
+            margin: 0 auto;
         }
 
         /* Обратный отсчёт */
         .countdown {
             text-align: center;
             padding: 50px 20px;
-            margin-top: 50px;
             background: linear-gradient(135deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.5) 100%);
             border-radius: 20px;
             backdrop-filter: blur(10px);
@@ -779,26 +763,27 @@
     <div class="background"></div>
 
     <!-- КОНВЕРТ -->
-    <div class="envelope-container hidden-load" id="envelopeContainer">
+    <div class="envelope-container" id="envelopeContainer">
         <div class="envelope-wrapper" id="envelopeWrapper">
             <!-- Клапан конверта -->
-            <div class="envelope-flap"></div>
+            <div class="envelope-flap">
+                <div class="flap-text">
+                    <div class="flap-line flap-left">Приглашение</div>
+                    <div class="flap-line flap-right">на свадьбу</div>
+                </div>
+            </div>
             
             <!-- Печать на стыке клапана и тела -->
-            <button class="seal" id="seal" onclick="openEnvelope()">
-                <span class="seal-text">Нажмите<br>чтобы<br>открыть</span>
+            <button class="seal" id="seal" onclick="openEnvelope()" aria-label="Открыть приглашение">
+                <img src="button.png" alt="печать" class="seal-image">
+                <span class="seal-text">нажми</span>
             </button>
             
             <!-- Тело конверта -->
             <div class="envelope">
                 <div class="envelope-content">
-                    <!-- <h1 class="envelope-title">приглашение</h1> -->
                     <p class="envelope-to">
-                        Кому: <span class="guest-names" id="guestNames"> </span>
-                    </p>
-                    <p class="envelope-message">
-                        Мы будем рады, если вы проведёте<br>
-                        вместе с нами этот особенный день
+                        Кому: <span class="guest-names" id="guestNames">Дорогой гость</span>
                     </p>
                 </div>
             </div>
@@ -815,6 +800,10 @@
             <span class="calligraphy">мы — женимся!</span>
         </div>
 
+        <p class="info-text">
+            Будем счастливы разделить с вами этот особенный день и надеемся, что он запомнится вам так же ярко, как и нам
+        </p>
+
         <!-- Фотокарточка -->
         <div class="photo-card">
             <div class="photo-frame">
@@ -823,7 +812,7 @@
             <div class="photo-caption">Анастасия & Артём</div>
         </div>
 
-        <!-- Информация в 4 строки -->
+        <!-- Информация -->
         <div class="info-section">
             <div class="info-row">
                 <span class="info-question">Когда?</span>
@@ -836,15 +825,10 @@
             </div>
             
             <div style="text-align: center;">
-                <a href="https://yandex.com/maps/-/CPq4FUM-" target="_blank" class="map-button">
+                <a href="https://yandex.com/maps/-/CPq4FUM-" target="_blank" rel="noopener noreferrer" class="map-button">
                     📍 Посмотреть на карте
                 </a>
             </div>
-
-            <p class="info-text">
-                Сбор гостей на месте в 14:00<br><br>
-                Для наших иногородних гостей будет организован трансфер из Вятских Полян и обратно 🚌
-            </p>
         </div>
 
         <!-- Дресс-код -->
@@ -856,22 +840,16 @@
             </p>
             <div class="color-palette">
                 <div class="color-row">
-                    <div class="color-circle" style="background-color: #E18350;"></div>
-                    <div class="color-circle" style="background-color: #F3C073;"></div>
-                    <div class="color-circle" style="background-color: #668455;"></div>
-                    <div class="color-circle" style="background-color: #C76961;"></div>
-                    <div class="color-circle" style="background-color: #6E3324;"></div>
-                </div>
-                <div class="color-row">
-                    <div class="color-circle" style="background-color: #FFCFAB;"></div>
-                    <div class="color-circle" style="background-color: #F3E7B2;"></div>
-                    <div class="color-circle" style="background-color: #C0D1AE;"></div>
-                    <div class="color-circle" style="background-color: #F7B1AB;"></div>
-                    <div class="color-circle" style="background-color: #DEBFB0;"></div>
+                    <div class="color-circle" style="background-color: #f7d9ca;"></div>
+                    <div class="color-circle" style="background-color: #ffbfa6;"></div>
+                    <div class="color-circle" style="background-color: #f09487;"></div>
+                    <div class="color-circle" style="background-color: #8aba9c;"></div>
+                    <div class="color-circle" style="background-color: #afd6b8;"></div>
+                    <div class="color-circle" style="background-color: #d3f0da;"></div>
                 </div>
             </div>
             <p class="dresscode-additional">
-                Мероприятие будет в значительной степени проходить на свежем воздухе, поэтому одежду и обувь должны быть не только красивыми, но и удобными
+                Мероприятие будет в значительной степени проходить на свежем воздухе, поэтому одежда и обувь должны быть не только красивыми, но и удобными
             </p>
         </div>
 
@@ -885,28 +863,25 @@
 
         <!-- RSVP -->
         <div class="rsvp-section">
-            <p class="rsvp-text">Просим подтвердить своё присутствие не позднее 30 апреля</p>
-            <div class="rsvp-buttons">
-                <button class="rsvp-button rsvp-yes" id="rsvpYes" onclick="setRSVP('yes')">Подтвердить 😊</button>
-                <button class="rsvp-button rsvp-no" id="rsvpNo" onclick="setRSVP('no')">Отказаться 😢</button>
-            </div>
+            <p class="rsvp-text">
+                Просим подтвердить своё присутствие<br>не позднее 30 апреля,
+            </p>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScH2NQzVHE0i96EBDYivY6qZHU7thnBZD7rsPLOnV2z66dCbw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="form-button">
+                заполнив эту форму
+            </a>
         </div>
 
-        <!-- Комментарии -->
-        <div class="comments-section">
-            <p class="comments-text">
-                Если вы хотите оставить для нас комментарий или уведомить об отсутствии одного из гостей в приглашении, напишите нам
+        <!-- Финальное сообщение -->
+        <div class="final-message">
+            <p>
+                Мы будем рады, если вы проведёте<br>
+                вместе с нами этот особенный день
             </p>
-            <textarea 
-                id="commentInput" 
-                class="comment-input" 
-                placeholder="Ваш комментарий..." 
-                rows="4"
-            ></textarea>
-            <button class="comment-submit" onclick="submitComment()">Отправить</button>
         </div>
+
+        <!-- Обратный отсчёт -->
         <div class="countdown">
-            <h2 class="countdown-title">До нашего дня осталось</h2>
+            <h2 class="countdown-title">До свадьбы осталось</h2>
             <div class="countdown-timer">
                 <div class="countdown-item">
                     <div class="countdown-number" id="days">000</div>
@@ -930,13 +905,16 @@
 
     <script>
         // ============================================
-        // БАЗА ДАННЫХ ГОСТЕЙ
+        // БАЗА ДАННЫХ ГОСТЕЙ - ГЛОБАЛЬНАЯ ПЕРЕМЕННАЯ
         // ============================================
-        // URL вашего Apps Script Web App (замените на свой)
-        const webAppUrl = 'https://script.google.com/macros/s/AKfycbxYBXn4OqjXQJrInVTuWY1CdemgpwKzNPUthLasI7KQt8XQqFLX4fJ8ti808Rt9dSJl/exec';
-
         const guestGroups = {
-            'default': 'Дорогой гость'
+            'default': 'Дорогой гость',
+            'parents-nastya': 'Мама и Папа',
+            'parents-artyom': 'Мама и Папа',
+            'brother': 'Серёжа и Амина',
+            'sister': 'Алёна и Денис',
+            'grands_voxm': "Бабушка и Дед", 
+            // Добавьте здесь другие группы гостей
         };
 
         // Получение имён гостей из URL
@@ -946,27 +924,11 @@
             return guestGroups[groupId] || guestGroups['default'];
         }
 
-        // Загрузка словаря гостевых групп из Google Sheet
-        async function loadGuestGroups() {
-            try {
-                const response = await fetch(webAppUrl + '?action=getGuests');
-                if (!response.ok) throw new Error('Network response was not ok');
-                const data = await response.json();
-                Object.assign(guestGroups, data);
-                // установить имена только после получения данных
-                const namesElem = document.getElementById('guestNames');
-                namesElem.textContent = getGuestNames();
-                // показать конверт теперь, когда имена есть
-                document.getElementById('envelopeContainer').classList.remove('hidden-load');
-            } catch (err) {
-                console.error('Не удалось загрузить guestGroups:', err);
-                // даже при ошибке, отображаем конверт чтобы не зависнуть
-                document.getElementById('envelopeContainer').classList.remove('hidden-load');
-            }
-        }
-
-        // вызываем загрузку после определения webAppUrl
-        loadGuestGroups();
+        // Установка имён гостей при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            const namesElem = document.getElementById('guestNames');
+            namesElem.textContent = getGuestNames();
+        });
 
         // Открытие конверта
         function openEnvelope() {
@@ -985,7 +947,7 @@
                 setTimeout(() => {
                     envelopeContainer.classList.add('hidden');
                     mainContent.classList.add('visible');
-                    window.scrollTo(0, 0);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }, 500);
             }, 800);
         }
@@ -1011,64 +973,6 @@
 
         updateCountdown();
         setInterval(updateCountdown, 1000);
-
-        // ============================================
-        // RSVP И КОММЕНТАРИИ
-        // ============================================
-
-        // Получить ID группы гостей из URL
-        function getGroupId() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('group') || 'default';
-        }
-
-        // Функция для установки ответа (Да/Нет)
-        function setRSVP(choice) {
-            const yesBtn = document.getElementById('rsvpYes');
-            const noBtn = document.getElementById('rsvpNo');
-            const groupId = getGroupId();
-
-            if (choice === 'yes') {
-                yesBtn.classList.add('active');
-                yesBtn.disabled = true;
-                noBtn.classList.remove('active');
-                noBtn.disabled = false;
-                sendToGoogleSheet(groupId, 'rsvp', 'Да');
-            } else if (choice === 'no') {
-                noBtn.classList.add('active');
-                noBtn.disabled = true;
-                yesBtn.classList.remove('active');
-                yesBtn.disabled = false;
-                sendToGoogleSheet(groupId, 'rsvp', 'Нет');
-            }
-        }
-
-        // Функция для отправки комментария
-        function submitComment() {
-            const commentText = document.getElementById('commentInput').value.trim();
-            const groupId = getGroupId();
-
-            if (commentText.length === 0) {
-                alert('Пожалуйста, введите комментарий');
-                return;
-            }
-
-            sendToGoogleSheet(groupId, 'comment', commentText);
-            document.getElementById('commentInput').value = '';
-            alert('Комментарий отправлен!');
-        }
-
-        // Функция для отправки данных в Google Sheet
-        function sendToGoogleSheet(groupId, type, value) {
-            console.log('Отправка:', { groupId, type, value });
-            
-            fetch(webAppUrl, {
-                method: 'POST',
-                body: JSON.stringify({ groupId, type, value }),
-                mode: 'no-cors'
-            })
-            .catch(err => console.error('Ошибка отправки:', err));
-        }
     </script>
 </body>
 </html>
