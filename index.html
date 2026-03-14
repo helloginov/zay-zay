@@ -31,7 +31,7 @@
             --calligraphy-color: #411e1e;
             
             /* Цвет "рукописных" имён гостей (синий как ручкой) */
-            --handwritten-blue: #1a4480;
+            --handwritten-blue: #3327a0;
             
             /* Золотистый цвет для имён на фото */
             --gold-color: #c9a227;
@@ -41,6 +41,17 @@
             
             /* Отступ между секциями */
             --section-gap: 80px;
+
+            /* ============================================
+               ОСНОВНОЙ ТЕКСТ — размер, толщина, стиль
+               Применяется к: info-text, info-question,
+               info-answer, dresscode-text, dresscode-additional,
+               wishes-text, rsvp-text, эпиграф
+               ============================================ */
+            --body-font-size: clamp(1.625rem, 5vw, 2.125rem);
+            --body-font-weight: 590;
+            --body-font-style: normal;
+            --body-line-height: 1.7;
         }
 
         * {
@@ -128,7 +139,7 @@
         .envelope {
             position: relative;
             width: 100%;
-            background: linear-gradient(180deg, #e8d4bc 0%, #c7a77f 100%);
+            background: linear-gradient(180deg, #75a588 0%, #69977b 100%);
             border-radius: 0 0 10px 10px;
             box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
             padding: 30px;
@@ -174,66 +185,12 @@
         }
 
         .envelope-flap::before {
-            border-bottom: 126px solid #e0d2c0;
+            border-bottom: 126px solid #9bd5b1;
             filter: drop-shadow(0 -4px 3px rgba(0,0,0,0.15));
         }
 
         .envelope-flap::after {
-            border-bottom: 126px solid #bfa78f;
-        }
-
-        .flap-text {
-            position: absolute;
-            top: 95px; /* Было 135px - уменьшено, чтобы текст не уезжал вверх */
-            left: 50%;
-            transform: translateX(-50%) rotateX(180deg);
-            font-family: 'Great Vibes', cursive;
-            font-style: normal;
-            font-size: clamp(1.1rem, 2.5vw, 1.5rem); /* Немного уменьшен размер для мобильных */
-            color: var(--heading-color);
-            letter-spacing: 0.6px;
-            z-index: 11;
-            transition: all 1.0s ease-in-out;
-            opacity: 1;
-            display: flex;
-            flex-direction: column;
-            width: 160px; /* Было 180px - немного уже для мобильных */
-            line-height: 1.05;
-        }
-
-        .flap-line {
-            flex: 1;
-        }
-
-        .flap-left {
-            text-align: left;
-        }
-
-        .flap-right {
-            text-align: right;
-        }
-
-        .envelope-wrapper.opened .flap-text {
-            animation: flapTextDisappear 1.0s ease-in-out forwards;
-        }
-
-        @keyframes flapTextDisappear {
-            0% {
-                transform: translateX(-50%) rotateX(180deg);
-                opacity: 1;
-            }
-            45% {
-                transform: translateX(-50%) rotateX(90deg);
-                opacity: 1;
-            }
-            55% {
-                transform: translateX(-50%) rotateX(90deg);
-                opacity: 0;
-            }
-            100% {
-                transform: translateX(-50%) rotateX(0deg);
-                opacity: 0;
-            }
+            border-bottom: 126px solid #8bb199;
         }
 
         /* печать и отступы по умолчанию для мобильных */
@@ -255,13 +212,13 @@
                 border-right: 320px solid transparent;
             }
             .envelope-flap::before {
-                border-bottom: 189px solid #f5e6d3;
+                border-bottom: 189px solid #9bd5b1;
             }
             .envelope-flap::after {
-                border-bottom: 189px solid #d4c4a8;
+                border-bottom: 189px solid #8bb199;
             }
             .flap-text {
-                top: 115px; /* Было 90px - скорректировано */
+                top: 115px;
                 font-size: clamp(1.5rem, 3.5vw, 2.4rem);
                 width: 230px;
             }
@@ -325,7 +282,7 @@
             border: none;
             padding: 0;
             z-index: 20;
-            transition: all 0.3s ease;
+            transition: all 0.7s ease;
             min-width: 120px;
             min-height: 120px;
         }
@@ -347,8 +304,8 @@
 
         .seal-text {
             position: absolute;
-            color: #8d6802;
-            font-size: clamp(0.8rem, 2.7vw, 1.0rem);
+            color: #785a05;
+            font-size: clamp(0.9rem, 2.7vw, 1.0rem);
             text-transform: uppercase;
             letter-spacing: 0.5px;
             text-shadow: 
@@ -402,8 +359,9 @@
         .epigraph {
             text-align: center;
             font-style: italic;
-            font-size: clamp(1.325rem, 4vw, 1.825rem);
-            line-height: 1.8;
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
+            line-height: var(--body-line-height);
             margin-bottom: var(--section-gap);
             padding: 30px;
             position: relative;
@@ -499,30 +457,31 @@
 
         .info-question {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.625rem, 5vw, 2.125rem);
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
+            font-style: var(--body-font-style);
             color: var(--text-color);
             text-align: left;
-            font-weight: normal;
-            font-style: normal;
         }
 
         .info-answer {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.625rem, 5vw, 2.125rem);
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
+            font-style: var(--body-font-style);
             color: var(--text-color);
             text-align: right;
-            font-weight: normal;
             max-width: 60%;
         }
 
         .info-text {
             text-align: center;
             font-family: 'Cormorant Garamond', serif;
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
             font-style: italic;
-            font-size: clamp(1.625rem, 5vw, 2.125rem);
-            line-height: 1.7;
+            line-height: var(--body-line-height);
             margin: 30px 0 var(--section-gap);
-            font-weight: normal;
         }
 
         /* Кнопка карты */
@@ -562,14 +521,14 @@
 
         .dresscode-text {
             font-family: 'Cormorant Garamond', serif;
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
             font-style: italic;
-            font-size: clamp(1.625rem, 5vw, 2.125rem);
-            line-height: 1.7;
+            line-height: var(--body-line-height);
             margin-bottom: 30px;
             max-width: 550px;
             margin-left: auto;
             margin-right: auto;
-            font-weight: normal;
         }
 
         .color-palette {
@@ -602,9 +561,10 @@
 
         .dresscode-additional {
             font-family: 'Cormorant Garamond', serif;
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
             font-style: italic;
-            font-size: clamp(1.625rem, 5vw, 2.125rem);
-            line-height: 1.7;
+            line-height: var(--body-line-height);
             margin-top: 25px;
             max-width: 550px;
             margin-left: auto;
@@ -628,9 +588,10 @@
 
         .wishes-text {
             font-family: 'Cormorant Garamond', serif;
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
             font-style: italic;
-            font-size: clamp(1.625rem, 5vw, 2.125rem);
-            line-height: 1.7;
+            line-height: var(--body-line-height);
             max-width: 550px;
             margin-left: auto;
             margin-right: auto;
@@ -645,7 +606,9 @@
 
         .rsvp-text {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(1.625rem, 5vw, 2.125rem);
+            font-size: var(--body-font-size);
+            font-weight: var(--body-font-weight);
+            font-style: var(--body-font-style);
             margin-bottom: 20px;
             color: var(--text-color);
             line-height: 1.6;
@@ -765,12 +728,7 @@
     <div class="envelope-container" id="envelopeContainer">
         <div class="envelope-wrapper" id="envelopeWrapper">
             <!-- Клапан конверта -->
-            <div class="envelope-flap">
-                <div class="flap-text">
-                    <div class="flap-line flap-left">Приглашение</div>
-                    <div class="flap-line flap-right">на свадьбу</div>
-                </div>
-            </div>
+            <div class="envelope-flap"></div>
             
             <!-- Печать на стыке клапана и тела -->
             <button class="seal" id="seal" onclick="openEnvelope()" aria-label="Открыть приглашение">
@@ -799,10 +757,6 @@
             <span class="calligraphy">мы — женимся!</span>
         </div>
 
-        <p class="info-text">
-            Дорогие и любимые! Скоро случится очень важное и счастливое для нас событие. Мы очень хотим провести этот особенный день в кругу самых близких людей. С большим удовольствием вас приглашаем разделить с нами эту радость
-        </p>
-
         <!-- Фотокарточка -->
         <div class="photo-card">
             <div class="photo-frame">
@@ -810,6 +764,10 @@
             </div>
             <div class="photo-caption">Анастасия & Артём</div>
         </div>
+
+        <p class="info-text">
+            Дорогие и любимые! Скоро случится очень важное и счастливое для нас событие. Мы очень хотим провести этот особенный день в кругу самых близких людей. С большим удовольствием приглашаем вас разделить с нами эту радость
+        </p>
 
         <!-- Информация -->
         <div class="info-section">
@@ -862,7 +820,7 @@
         <!-- RSVP -->
         <div class="rsvp-section">
             <p class="rsvp-text">
-                Просим подтвердить своё присутствие<br>не позднее 30 апреля,
+                Пожалуйста,  подтвердите своё присутствие<br>не позднее 30 апреля,
             </p>
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScH2NQzVHE0i96EBDYivY6qZHU7thnBZD7rsPLOnV2z66dCbw/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="form-button">
                 заполнив эту форму
@@ -872,8 +830,7 @@
         <!-- Финальное сообщение -->
         <div class="final-message">
             <p>
-                Мы будем рады, если вы проведёте<br>
-                вместе с нами этот особенный день
+                С нетерпением ждём, ваши Настя и Артём
             </p>
         </div>
 
@@ -906,12 +863,26 @@
         // БАЗА ДАННЫХ ГОСТЕЙ - ГЛОБАЛЬНАЯ ПЕРЕМЕННАЯ
         // ============================================
         const guestGroups = {
-            'default': 'Дорогой гость',
+            'we': 'Настя и Артём',
             'parents-nastya': 'Мама и Папа',
             'parents-artyom': 'Мама и Папа',
             'brother': 'Серёжа и Амина',
             'sister': 'Алёна и Денис',
-            'grands_voxm': "Бабушка и Дед", 
+            'grands-voxm': "Бабушка и Дед",
+            'gr-nina': "Бабушка",
+            'grands-schast': "Бабушка и Дедушка",
+            'grands-zabol': "Бабушка и Дедушка",
+            'penkins': "Василя и Дима",
+            'beresnevs': "Соня и Дима",
+            'miklins': "Аня и Тимофей",
+            'shukins': "Настя, Вадик и Кирилл",
+            'dimon': "Димон и Алёна",
+            'serj': "Серёга",
+            'petya': "Петя",
+            'katya': "Катя, Лиза, Наташа и Динара",
+            'nat': "Наташа",
+            'mary': "Маша и Лёва",
+            'uncle': "дядя Лёша и тётя Лена",
             // Добавьте здесь другие группы гостей
         };
 
