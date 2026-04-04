@@ -31,7 +31,7 @@
             --calligraphy-color: #411e1e;
             
             /* Цвет "рукописных" имён гостей (синий как ручкой) */
-            --handwritten-blue: #3327a0;
+            --handwritten-blue: #352c87;
             
             /* Золотистый цвет для имён на фото */
             --gold-color: #c9a227;
@@ -743,22 +743,27 @@
         }
 
         .color-palette {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(8px, 2vw, 15px);
+            align-items: center;
             position: relative;
             z-index: 1; /* Кружки должны быть поверх размытого фона */
         }
 
         .color-row {
             display: flex;
-            gap: 20px;
+            justify-content: center;
+            gap: clamp(8px, 2vw, 15px);
         }
 
         .color-circle {
-            width: 70px;
-            height: 70px;
             border-radius: 50%;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Легкая тень, чтобы отделить от белого фона */
             transition: transform 0.2s ease;
             cursor: pointer;
+            width: clamp(35px, 12vw, 70px);
+            height: clamp(35px, 12vw, 70px);
         }
 
         .color-circle:hover {
@@ -823,13 +828,11 @@
             
             <div class="info-row">
                 <span class="info-question">Где?</span>
-                <span class="info-answer">Турбаза «Шунский берег»,<br>Кировская область</span>
+                <span class="info-answer">Кафе "Славянка", <br>г. Вятские Поляны<br>Кировская область</span>
             </div>
             
             <div style="text-align: center;">
-                <a href="https://yandex.com/maps/-/CPq4FUM-" target="_blank" rel="noopener noreferrer" class="map-button">
-                    📍 Посмотреть на карте
-                </a>
+                Сбор гостей в 13:00
             </div>
         </div>
 
@@ -849,6 +852,9 @@
                         <div class="color-circle" style="background-color: #f7d9ca;"></div>
                         <div class="color-circle" style="background-color: #ffbfa6;"></div>
                         <div class="color-circle" style="background-color: #f09487;"></div>
+                        <div class="color-circle" style="background-color: rgb(158, 173, 185);"></div>
+                    </div>
+                    <div class="color-row">
                         <div class="color-circle" style="background-color: #8aba9c;"></div>
                         <div class="color-circle" style="background-color: #afd6b8;"></div>
                         <div class="color-circle" style="background-color: #d3f0da;"></div>
@@ -856,7 +862,7 @@
                 </div>
             </div>
             <p class="dresscode-additional">
-                Банкет будет проходить на свежем воздухе, поэтому одежда и обувь должны быть не только красивыми, но и удобными
+                Для иногородних гостей постараемся организовать размещение на ночь с 18-го на 19-е
             </p>
         </div>
 
@@ -925,7 +931,8 @@
             'grands-zabol': "Бабушка и Дедушка",
             'penkins': "Василя и Дима",
             'beresnevs': "Соня и Дима",
-            'miklins': "Аня и Тимофей",
+            'miklins_y': "Аня и Тимофей",
+            'miklins_o': "Наталья и Влад",
             'shukins': "Настя, Вадик и Кирилл",
             'dimon': "Димон и Алёна",
             'serj': "Серёга",
@@ -938,7 +945,10 @@
             'nat-kondr': "Наташа",
             'mary-leva': "Маша и Лёва",
             'uncles-alex': "тётя Лена и дядя Лёша",
-            'uncles-dim': "дядя Дима, тётя Наташа и Арина",
+            'uncles-dim': "дядя Дима, тётя Наташа, Арина и Саша",
+            'uncles-voxm': "дядя Серёжа и тётя Люба",
+            'uncles-galim': "тётя Люда и дядя Рашид",
+            'george': "Гоша",
             'universal': "Дорогие гости",
             // Добавьте здесь другие группы гостей
         };
